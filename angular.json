@@ -109,8 +109,5 @@
       }
     }
   },
-  "defaultProject": "ci_cd_heroku",
-  "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
-  }
+  "defaultProject": "ci_cd_heroku"
 }
