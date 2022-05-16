@@ -52,18 +52,18 @@ jobs:
       uses: actions/upload-artifact@v2
       with: 
         name: ci-cd-heroku-${{ github.run_id }}-${{ github.run_number }}
-        path: ./dist/ci-cd-heroku
+        path: ./dist/ci_cd_heroku
 
   deploy: 
     needs: build
     runs-on: ubuntu-latest
 
     steps: 
-    # - name: Download artifact
-    #   uses: actions/download-artifact@v2
-    #   with: 
-    #     name: ci-cd-heroku-${{ github.run_id }}-${{ github.run_number }}
-    #     path: './build'
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with: 
+        name: ci-cd-heroku-${{ github.run_id }}-${{ github.run_number }}
+        path: './build'
 
     - name: Check out repository
       uses: actions/checkout@v2
