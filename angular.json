@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ci_cd_heroku",
+            "outputPath": "dist/ci_cd_heroku/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -105,9 +105,79 @@
               "browsers": "ChromeHeadlessCI"
             }
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/ci_cd_heroku/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "ci_cd_heroku:build:development",
+              "serverTarget": "ci_cd_heroku:server:development"
+            },
+            "production": {
+              "browserTarget": "ci_cd_heroku:build:production",
+              "serverTarget": "ci_cd_heroku:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ci_cd_heroku:build:production",
+              "serverTarget": "ci_cd_heroku:server:production"
+            },
+            "development": {
+              "browserTarget": "ci_cd_heroku:build:development",
+              "serverTarget": "ci_cd_heroku:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "ci_cd_heroku"
+  "defaultProject": "ci_cd_heroku",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
